@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-class ExampleController extends Controller
+use Illuminate\Http\Request;
+
+class SettingsController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -14,5 +16,7 @@ class ExampleController extends Controller
         //
     }
 
-    //
+    function getInitCredentials(Request $request){
+        
+    }
 }

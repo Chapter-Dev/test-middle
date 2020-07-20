@@ -1,0 +1,23 @@
+<?php
+namespace $CLASS_NAMESPACE$;
+
+class $CLASS$
+{
+    /**
+     * Handles the data that need to be proccessod
+     */
+    protected $data;
+
+    function __construct($data){
+        $this->data = $data;
+    }
+
+    /**
+     * Process the data as per the criterias mentioned in this function.
+     *
+     * @return array
+     */
+     function process(){
+
+     }
+}

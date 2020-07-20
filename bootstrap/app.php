@@ -23,9 +23,9 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +37,6 @@ $app = new Laravel\Lumen\Application(
 | your own bindings here if you like or you can make another file.
 |
 */
-
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
@@ -47,6 +46,14 @@ $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
+
+$app->singleton(Illuminate\Session\SessionManager::class, function () use ($app) {
+    return $app->loadComponent('session', Illuminate\Session\SessionServiceProvider::class, 'session');
+});
+
+$app->singleton('session.store', function () use ($app) {
+    return $app->loadComponent('session', Illuminate\Session\SessionServiceProvider::class, 'session.store');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -59,8 +66,12 @@ $app->singleton(
 |
 */
 
-$app->configure('app');
+//$app->configure('app');
+collect(scandir(__DIR__ . '/../config'))->each(function ($item) use (&$app) {
+    $app->configure(basename($item, '.php'));
+});
 
+$app->configure('session');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -76,9 +87,17 @@ $app->configure('app');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'csrf' => App\Http\Middleware\VerifyCsrfToken::class,
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
+
+$app->middleware([
+    //other middlewares ...
+    Illuminate\Session\Middleware\StartSession::class,
+]);
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -91,9 +110,11 @@ $app->configure('app');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+//$app->register(App\Providers\AppServiceProvider::class);
+$app->register(Illuminate\Session\SessionServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+
+//$app->register(App\Providers\EventServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -113,3 +134,4 @@ $app->router->group([
 });
 
 return $app;
+

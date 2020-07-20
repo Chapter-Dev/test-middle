@@ -12,7 +12,7 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
-$router->get('/', function () use ($router) {
+$router->get('/init','SettingsController@getInitCredentials');
+$router->get('/', ['middleware' => ['csrf'], function () use($router) {
     return $router->app->version();
-});
+}]);

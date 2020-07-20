@@ -6,7 +6,12 @@
     "type": "project",
     "require": {
         "php": "^7.2.5",
-        "laravel/lumen-framework": "^7.0"
+        "coconutcraig/laravel-postmark": "^2.8",
+        "guzzlehttp/guzzle": "^6.5",
+        "illuminate/session": "^7.20",
+        "laravel/lumen-framework": "^7.0",
+        "moontoast/math": "^1.2",
+        "wildbit/postmark-php": "^2.11"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.1",
