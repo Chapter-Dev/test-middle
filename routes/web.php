@@ -14,5 +14,5 @@
 */
 $router->get('/init','SettingsController@getInitCredentials');
 $router->get('/', ['middleware' => ['csrf'], function () use($router) {
-    return $router->app->version();
+    
 }]);
