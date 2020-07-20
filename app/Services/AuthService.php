@@ -15,10 +15,11 @@ class AuthService extends DatabaseService
      * @author Apoorv Vyas
      */
     function login(){
-        
-    }
+        if($this->email){
+            
+        }   
+        elseif($this->token){
 
-    function allowLogin(){
-        
+        }
     }
 }
