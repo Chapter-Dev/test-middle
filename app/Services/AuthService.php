@@ -15,11 +15,14 @@ class AuthService extends DatabaseService
      * @author Apoorv Vyas
      */
     function login(){
-        if($this->email){
-            
-        }   
-        elseif($this->token){
-
+        $this->request_url = $this->base_url.'user/login';
+        $query = [
+            'email' => $this->email
+        ];
+        if($this->token){
+            $this->request_url = $this->base_url.'user/login/'.$this->token;
+            $query = [];
         }
+        $this->get($query);
     }
 }

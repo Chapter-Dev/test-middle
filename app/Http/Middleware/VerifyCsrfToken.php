@@ -52,11 +52,10 @@ class VerifyCsrfToken {
      */
     protected function tokensMatch($request) {
         $token = $request->input('_token') ?: $request->header('X-CSRF-TOKEN');
-
+        
         if (!$token && $header = $request->header('X-XSRF-TOKEN')) {
             $token = $this->encrypter->decrypt($header);
         }
-
         return $request->session()->token() == $token;
     }
 

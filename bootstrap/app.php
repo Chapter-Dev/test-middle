@@ -87,15 +87,15 @@ $app->configure('session');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
+$app->middleware([
+    //other middlewares ...
+    Illuminate\Session\Middleware\StartSession::class,
+]);
 $app->routeMiddleware([
     'csrf' => App\Http\Middleware\VerifyCsrfToken::class,
     'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 
-$app->middleware([
-    //other middlewares ...
-    Illuminate\Session\Middleware\StartSession::class,
-]);
 
 
 

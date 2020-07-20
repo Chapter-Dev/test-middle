@@ -13,6 +13,12 @@
 |
 */
 $router->get('/init','SettingsController@getInitCredentials');
-$router->get('/', ['middleware' => ['csrf'], function () use($router) {
-    
-}]);
+$router->group(['middleware' => 'csrf'],function() use($router){
+    $router->group(['prefix' => '/user'], function() use($router){
+        $router->post('/profile','UserController@profile');
+        $router->get('/login','UserController@login');
+        $router->get('/login/{token}','UserController@loginSubmit');
+        $router->post('/create','UserController@register');
+        $router->post('{uuid}/update','UserController@update');
+    });
+});

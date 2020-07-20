@@ -24,6 +24,6 @@ class SettingsController extends Controller
     }
 
     function getInitCredentials(Request $request){
-        
+        return $request->session()->token();
     }
 }
