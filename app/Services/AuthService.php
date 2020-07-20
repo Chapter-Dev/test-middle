@@ -5,7 +5,7 @@ class AuthService extends DatabaseService
 {
     public $email;
 
-    public $password;
+    public $token;
 
     /**
      * Login request 
@@ -14,18 +14,11 @@ class AuthService extends DatabaseService
      * 
      * @author Apoorv Vyas
      */
-    function login($request){
+    function login(){
         
     }
 
-    /**
-     * Register request 
-     * 
-     * @param array $request
-     * 
-     * @author Apoorv Vyas
-     */
-    function register($request){
-
+    function allowLogin(){
+        
     }
 }
