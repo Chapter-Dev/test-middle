@@ -3,16 +3,16 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Factory as Auth;
+use App\Services\UserService;
 
 class Authenticate
 {
-    /**
+      /**
      * The authentication guard factory instance.
      *
      * @var \Illuminate\Contracts\Auth\Factory
      */
-    protected $auth;
+    protected $userService;
 
     /**
      * Create a new middleware instance.
@@ -20,9 +20,9 @@ class Authenticate
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
      */
-    public function __construct(Auth $auth)
+    public function __construct(UserService $userService)
     {
-        $this->auth = $auth;
+        $this->userService = $userService;
     }
 
     /**
@@ -35,8 +35,23 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+        $uuid = $request->headers->get('uuid');
+        $token = $request->headers->get('token');
+        if (!empty($uuid) && !empty($token)) {
+            try{
+                $this->authService->token = $token;
+                $this->authService->uuid = $uuid;
+                $this->authService->verify();
+            }
+            catch(Exception $e){
+                
+                return response($e->getMessage(),($this->authService->status)?? '401');
+
+                return response('Unauthorized',401);
+            }
+        }
+        elseif(empty($uuid) || empty($token)){
+            
         }
 
         return $next($request);

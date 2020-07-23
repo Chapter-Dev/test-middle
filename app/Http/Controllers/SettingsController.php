@@ -24,6 +24,10 @@ class SettingsController extends Controller
     }
 
     function getInitCredentials(Request $request){
-        return $request->session()->token();
+        return response()->json([
+            'csrf'=> $request->session()->token(),
+            'token' => $request->session()->get('api_token'),
+            'uuid'=> $request->session()->get('uuid')
+        ]);
     }
 }

@@ -7,6 +7,8 @@ class AuthService extends DatabaseService
 
     public $token;
 
+    public $uuid;
+
     /**
      * Login request 
      * 
@@ -24,5 +26,18 @@ class AuthService extends DatabaseService
             $query = [];
         }
         $this->get($query);
+    }
+
+    function verify(){
+
+        if(!empty($this->uuid) && !empty($this->token)){
+            $this->request_url = $this->base_url.'/verify-user';
+
+            $this->post([
+                'uuid' => $this->uuid,
+                'token' => $this->token
+            ]);
+        }
+        
     }
 }

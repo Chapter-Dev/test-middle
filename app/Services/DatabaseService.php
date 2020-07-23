@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use Exception;
+use GuzzleHttp\Psr7;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
@@ -32,24 +33,26 @@ class DatabaseService
         ];
         
         try{
-            $this->response = $this->client->get($this->request_url,$params);
+            $this->response = $this->client->get($this->request_url,$params,[
+                'headers' => [
+                    'User-Agent' => 'testing/1.0',
+                    'Accept'     => 'application/json',
+                    'X-Foo'      => ['Bar', 'Baz']
+                ]
+            ]);
             $this->status_code = $this->response->getStatusCode();
         }
         catch(RequestException $e){
-            $this->status_code = $e->getCode();
-            throw new Exception($e->getMessage());
+            $this->throwException($e);
         }
         catch(ServerException $e){
-            $this->status_code = $e->getCode();
-            throw new Exception($e->getMessage());
+            $this->throwException($e);
         }
         catch(ClientException $e){
-            $this->status_code = $e->getCode();
-            throw new Exception($e->getMessage());
+            $this->throwException($e);
         }
         catch(Exception $e){
-            $this->status_code = $e->getCode();
-            throw new Exception($e->getMessage());
+            $this->throwException($e);
         }
     }
 
@@ -62,20 +65,16 @@ class DatabaseService
             $this->status_code = $this->response->getStatusCode();
         }
         catch(RequestException $e){
-            $this->status_code = $e->getCode();
-            throw new Exception($e->getMessage());
+            $this->throwException($e);
         }
         catch(ServerException $e){
-            $this->status_code = $e->getCode();
-            throw new Exception($e->getMessage());
+            $this->throwException($e);
         }
         catch(ClientException $e){
-            $this->status_code = $e->getCode();
-            throw new Exception($e->getMessage());
+            $this->throwException($e);
         }
         catch(Exception $e){
-            $this->status_code = $e->getCode();
-            throw new Exception($e->getMessage());
+            $this->throwException($e);
         }
         
     }
@@ -86,5 +85,11 @@ class DatabaseService
 
     function status(){
         return $this->status_code;
+    }
+
+    function throwException($e){
+        $this->status_code = $e->getCode();
+        $this->response = $e->getResponse();
+        throw new Exception($this->response()->message);
     }
 }

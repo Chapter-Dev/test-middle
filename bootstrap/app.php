@@ -89,7 +89,9 @@ $app->configure('session');
 
 $app->middleware([
     //other middlewares ...
+    App\Http\Middleware\CorsMiddleware::class,
     Illuminate\Session\Middleware\StartSession::class,
+    App\Http\Middleware\AfterMiddlware::class,
 ]);
 $app->routeMiddleware([
     'csrf' => App\Http\Middleware\VerifyCsrfToken::class,
